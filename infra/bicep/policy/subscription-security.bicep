@@ -32,18 +32,11 @@ resource denyPublicSqlDefinition 'Microsoft.Authorization/policyDefinitions@2023
   }
 }
 
-resource targetResourceGroup 'Microsoft.Resources/resourceGroups@2024-03-01' existing = if (assignDenyPublicSql) {
-  name: targetResourceGroupName
-}
-
-resource denyPublicSqlAssignment 'Microsoft.Authorization/policyAssignments@2024-04-01' = if (assignDenyPublicSql) {
-  name: 'wm-deny-public-sql'
-  scope: targetResourceGroup
-  properties: {
-    displayName: 'Deny public Azure SQL networking for the wealth-management environment'
+module denyPublicSqlAssignment 'deny-public-sql-assignment.bicep' = if (assignDenyPublicSql) {
+  name: 'wm-deny-public-sql-assignment'
+  scope: resourceGroup(targetResourceGroupName)
+  params: {
     policyDefinitionId: denyPublicSqlDefinition.id
-    enforcementMode: 'Default'
-    parameters: {}
   }
 }
 

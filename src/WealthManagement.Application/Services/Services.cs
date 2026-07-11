@@ -57,13 +57,15 @@ public sealed class PortfolioService(IPortfolioRepository repository, IAccessCon
 
 public sealed class TradeService(ITradeRepository repository, IAccessControlRepository access, IRequestValidator<SubmitTradeRequest> validator)
 {
+    private static readonly JsonSerializerOptions CanonicalJsonOptions = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+
     public async Task<SubmitTradeResponse> SubmitAsync(SubmitTradeRequest request, CancellationToken cancellationToken)
     {
         var result = validator.Validate(request);
         if (!result.IsValid) throw new RequestValidationException(result.Failures);
         if (!await access.CanAccessAccountAsync(request.AccountId, cancellationToken)) throw new AccessDeniedException("The account is outside the caller's authorized scope.");
         var normalized = request with { TransactionTypeCode = request.TransactionTypeCode.Trim().ToUpperInvariant(), ExternalReference = request.ExternalReference.Trim(), IdempotencyKey = request.IdempotencyKey.Trim() };
-        var canonical = JsonSerializer.Serialize(normalized, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+        var canonical = JsonSerializer.Serialize(normalized, CanonicalJsonOptions);
         var hash = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(canonical)));
         return await repository.SubmitAsync(normalized, hash, cancellationToken);
     }
