@@ -106,15 +106,19 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
-    app.MapGet("/account/login", () => Results.Challenge(new AuthenticationProperties { RedirectUri = "/" }, new[] { OpenIdConnectDefaults.AuthenticationScheme }));
+    app.MapGet("/account/login", () => Results.Challenge(new AuthenticationProperties { RedirectUri = "/" }, ChallengeSchemes));
     app.MapPost("/account/logout", async (HttpContext context, IAntiforgery antiforgery) =>
     {
         await antiforgery.ValidateRequestAsync(context);
-        return Results.SignOut(new AuthenticationProperties { RedirectUri = "/" }, new[] { CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectDefaults.AuthenticationScheme });
+        return Results.SignOut(new AuthenticationProperties { RedirectUri = "/" }, SignOutSchemes);
     });
 }
 
 app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
 app.Run();
 
-public partial class Program;
+public partial class Program
+{
+    internal static readonly string[] ChallengeSchemes = [OpenIdConnectDefaults.AuthenticationScheme];
+    internal static readonly string[] SignOutSchemes = [CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectDefaults.AuthenticationScheme];
+}

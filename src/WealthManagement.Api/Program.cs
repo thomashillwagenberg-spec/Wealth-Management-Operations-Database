@@ -46,7 +46,7 @@ builder.Services.AddRateLimiter(options =>
     options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(context => RateLimitPartition.GetFixedWindowLimiter(context.User.FindFirst("oid")?.Value ?? context.Connection.RemoteIpAddress?.ToString() ?? "anonymous", _ => new FixedWindowRateLimiterOptions { PermitLimit = 120, Window = TimeSpan.FromMinutes(1), QueueLimit = 0, AutoReplenishment = true }));
     options.AddPolicy("trade", context => RateLimitPartition.GetFixedWindowLimiter(context.User.FindFirst("oid")?.Value ?? "anonymous", _ => new FixedWindowRateLimiterOptions { PermitLimit = 10, Window = TimeSpan.FromMinutes(1), QueueLimit = 0, AutoReplenishment = true }));
 });
-builder.Services.AddHealthChecks().AddCheck("self", () => Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckResult.Healthy(), tags: new[] { "live", "ready" });
+builder.Services.AddHealthChecks().AddCheck("self", () => Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckResult.Healthy(), tags: LiveReadyTags);
 
 var app = builder.Build();
 if (!app.Environment.IsDevelopment())
@@ -69,4 +69,7 @@ app.MapAuditEndpoints();
 app.MapOperationsEndpoints(app.Environment, app.Configuration);
 app.Run();
 
-public partial class Program;
+public partial class Program
+{
+    internal static readonly string[] LiveReadyTags = ["live", "ready"];
+}

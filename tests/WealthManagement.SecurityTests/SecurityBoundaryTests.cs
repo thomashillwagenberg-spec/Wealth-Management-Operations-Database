@@ -16,6 +16,7 @@ namespace WealthManagement.SecurityTests;
 
 public sealed class SecurityBoundaryTests : IClassFixture<SecurityApplicationFactory>
 {
+    private static readonly HttpStatusCode[] HealthStatuses = [HttpStatusCode.OK, HttpStatusCode.ServiceUnavailable];
     private readonly SecurityApplicationFactory _factory;
     public SecurityBoundaryTests(SecurityApplicationFactory factory) => _factory = factory;
 
@@ -173,7 +174,7 @@ public sealed class SecurityBoundaryTests : IClassFixture<SecurityApplicationFac
         using var client = AdvisorClient();
         Assert.Equal(HttpStatusCode.OK, (await client.GetAsync("/api/version")).StatusCode);
         var health = await client.GetAsync("/api/operations/health");
-        Assert.Contains(health.StatusCode, new[] { HttpStatusCode.OK, HttpStatusCode.ServiceUnavailable });
+        Assert.Contains(health.StatusCode, HealthStatuses);
     }
 
     [Fact]
