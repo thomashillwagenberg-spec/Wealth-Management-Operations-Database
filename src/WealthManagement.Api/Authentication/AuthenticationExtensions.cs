@@ -12,8 +12,8 @@ public static class AuthenticationExtensions
 
         if (enableDevelopmentAuth)
         {
-            services.AddAuthentication(DevelopmentHeaderAuthenticationHandler.Scheme)
-                .AddScheme<Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions, DevelopmentHeaderAuthenticationHandler>(DevelopmentHeaderAuthenticationHandler.Scheme, _ => { });
+            services.AddAuthentication(DevelopmentHeaderAuthenticationHandler.SchemeName)
+                .AddScheme<Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions, DevelopmentHeaderAuthenticationHandler>(DevelopmentHeaderAuthenticationHandler.SchemeName, _ => { });
             return services;
         }
 

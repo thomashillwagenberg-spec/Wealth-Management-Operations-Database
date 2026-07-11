@@ -5,8 +5,14 @@ using WealthManagement.Application.Validation;
 
 namespace WealthManagement.Api.Middleware;
 
-public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IExceptionHandler
+public sealed partial class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IExceptionHandler
 {
+    [LoggerMessage(EventId = 1, Level = LogLevel.Error, Message = "Request failed with code {ErrorCode}")]
+    private static partial void LogServerFailure(ILogger logger, Exception exception, string errorCode);
+
+    [LoggerMessage(EventId = 2, Level = LogLevel.Warning, Message = "Request failed with code {ErrorCode}: {Message}")]
+    private static partial void LogRequestRejection(ILogger logger, string errorCode, string message);
+
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
         var (status, title, code) = exception switch
@@ -23,8 +29,8 @@ public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logge
             _ => (StatusCodes.Status500InternalServerError, "Unexpected server error", "unexpected_error")
         };
 
-        if (status >= 500) logger.LogError(exception, "Request failed with code {ErrorCode}", code);
-        else logger.LogWarning("Request failed with code {ErrorCode}: {Message}", code, exception.Message);
+        if (status >= 500) LogServerFailure(logger, exception, code);
+        else LogRequestRejection(logger, code, exception.Message);
 
         var problem = new ProblemDetails
         {

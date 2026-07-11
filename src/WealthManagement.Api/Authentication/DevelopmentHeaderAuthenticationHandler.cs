@@ -12,7 +12,7 @@ public sealed class DevelopmentHeaderAuthenticationHandler(
     UrlEncoder encoder,
     IWebHostEnvironment environment) : AuthenticationHandler<AuthenticationSchemeOptions>(options, logger, encoder)
 {
-    public const string Scheme = "DevelopmentHeader";
+    public const string SchemeName = "DevelopmentHeader";
 
     protected override Task<AuthenticateResult> HandleAuthenticateAsync()
     {
@@ -37,7 +37,7 @@ public sealed class DevelopmentHeaderAuthenticationHandler(
         if (identity.AdvisorId.HasValue)
             claims.Add(new Claim("advisor_id", identity.AdvisorId.Value.ToString(System.Globalization.CultureInfo.InvariantCulture)));
 
-        var claimsIdentity = new ClaimsIdentity(claims, Scheme, ClaimTypes.Name, ClaimTypes.Role);
-        return Task.FromResult(AuthenticateResult.Success(new AuthenticationTicket(new ClaimsPrincipal(claimsIdentity), Scheme)));
+        var claimsIdentity = new ClaimsIdentity(claims, SchemeName, ClaimTypes.Name, ClaimTypes.Role);
+        return Task.FromResult(AuthenticateResult.Success(new AuthenticationTicket(new ClaimsPrincipal(claimsIdentity), SchemeName)));
     }
 }
