@@ -7,7 +7,7 @@ resource vault 'Microsoft.KeyVault/vaults@2023-07-01' existing = { name: keyVaul
 resource key 'Microsoft.KeyVault/vaults/keys@2023-07-01' = {
   parent: vault
   name: keyName
-  properties: { kty: 'RSA-HSM' keySize: 3072 keyOps: ['wrapKey','unwrapKey'] attributes: { enabled: true exportable: false } }
+  properties: { kty: 'RSA-HSM', keySize: 3072, keyOps: ['wrapKey','unwrapKey'], attributes: { enabled: true, exportable: false } }
 }
 /* SQL server key registration and encryption-protector switch require the SQL server identity to receive Key Vault Crypto Service Encryption User. See docs/security/key-management.md. */
 output keyUri string = key.properties.keyUriWithVersion

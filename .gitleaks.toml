@@ -1,0 +1,7 @@
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Synthetic 64-character hex request-hash fixtures used by the SQL validation suite (e.g. @RequestHash='CCCC...'). These are placeholder SHA-256-shaped values, not credentials."
+regexTarget = "secret"
+regexes = ['''(?i)^[a-f0-9]{64}$''']
