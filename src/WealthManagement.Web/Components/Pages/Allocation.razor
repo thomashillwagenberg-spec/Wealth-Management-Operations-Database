@@ -1,0 +1,6 @@
+@page "/accounts/{AccountId:int}/allocation"
+@attribute [Authorize]
+@inject WealthManagementApiClient Api
+<h1>Account allocation</h1>
+@if (items is null) { <p>Loading…</p> } else if (items.Count == 0) { <p class="notice">No holdings were returned for this account.</p> } else { <table><thead><tr><th>Asset class</th><th>Value</th><th>Allocation</th></tr></thead><tbody>@foreach(var x in items){<tr><td>@x.AssetClassName</td><td>@x.AssetClassValue.ToString("C")</td><td>@x.AllocationPct.ToString("0.00")%</td></tr>}</tbody></table> }
+@code { [Parameter] public int AccountId { get; set; } private IReadOnlyList<AssetAllocationDto>? items; protected override async Task OnParametersSetAsync() => items = await Api.GetAllocationAsync(AccountId); }

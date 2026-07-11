@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <RootNamespace>WealthManagement.Api</RootNamespace>
+    <UserSecretsId>wealth-management-api-local-development</UserSecretsId>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../WealthManagement.Application/WealthManagement.Application.csproj" />
+    <ProjectReference Include="../WealthManagement.Infrastructure/WealthManagement.Infrastructure.csproj" />
+    <ProjectReference Include="../WealthManagement.Contracts/WealthManagement.Contracts.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" />
+  </ItemGroup>
+</Project>

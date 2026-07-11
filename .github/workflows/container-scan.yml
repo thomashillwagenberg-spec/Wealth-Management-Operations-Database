@@ -1,0 +1,42 @@
+name: Container build and scan
+on:
+  push:
+    branches: [main]
+    paths: ['src/**/Dockerfile', 'src/**/*.cs', '**/*.csproj', 'Directory.*.props', 'global.json', '.github/workflows/container-scan.yml']
+  pull_request:
+    paths: ['src/**/Dockerfile', 'src/**/*.cs', '**/*.csproj', 'Directory.*.props', 'global.json', '.github/workflows/container-scan.yml']
+permissions:
+  contents: read
+  security-events: write
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - name: api
+            dockerfile: src/WealthManagement.Api/Dockerfile
+          - name: web
+            dockerfile: src/WealthManagement.Web/Dockerfile
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ${{ matrix.dockerfile }}
+          load: true
+          push: false
+          tags: wealth-management-${{ matrix.name }}:scan
+      - uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: wealth-management-${{ matrix.name }}:scan
+          format: sarif
+          output: trivy-${{ matrix.name }}.sarif
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          exit-code: '1'
+      - uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: trivy-${{ matrix.name }}.sarif

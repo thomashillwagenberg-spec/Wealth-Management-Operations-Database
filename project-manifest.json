@@ -1,0 +1,94 @@
+{
+  "project": "Wealth Management Operations Database",
+  "original_project": "Wealth Management Operations Database",
+  "author": "Thomas Wagenberg",
+  "expanded_on": "2026-07-11",
+  "database_name": "WealthManagementOperations",
+  "synthetic_data": true,
+  "operating_modes": [
+    "Local learning mode",
+    "Azure application mode"
+  ],
+  "technology": {
+    "target_framework": "net10.0",
+    "dotnet_sdk": "10.0.301",
+    "api": "ASP.NET Core Web API",
+    "web": "Blazor Web App",
+    "database_access": [
+      "Microsoft.Data.SqlClient",
+      "Dapper",
+      "stored procedures",
+      "reporting views"
+    ],
+    "database_targets": [
+      "Microsoft SQL Server",
+      "Azure SQL Database"
+    ],
+    "infrastructure_as_code": "Bicep"
+  },
+  "original_database": {
+    "schemas": 6,
+    "base_tables": 15,
+    "original_sql_files": 18,
+    "expected_counts": {
+      "advisors": 5,
+      "clients": 30,
+      "investment_accounts": 50,
+      "securities": 25,
+      "security_prices": 175,
+      "transactions": 403,
+      "current_holdings": 300,
+      "compliance_reviews": 40,
+      "compliance_alerts": 25
+    }
+  },
+  "expanded_repository": {
+    "total_files": 238,
+    "sql_files": 34,
+    "csharp_files": 52,
+    "razor_files": 17,
+    "bicep_and_parameter_files": 13,
+    "github_workflows": 11,
+    "test_projects": 4,
+    "documentation_files_under_docs": 51
+  },
+  "execution_status": {
+    "original_static_review": "executed: 71 passed, 0 failed",
+    "expanded_static_review": "executed: 45 passed, 0 failed",
+    "shell_syntax": "executed: passed",
+    "dotnet_restore_build_test": "blocked: .NET SDK unavailable and network resolution prevented installation",
+    "sql_server_execution": "blocked: Docker, SQL Server, and sqlcmd unavailable",
+    "bicep_compile": "blocked: Azure CLI and Bicep unavailable",
+    "azure_deployment": "not performed; no credentials or paid-resource authorization",
+    "entra_and_managed_identity": "not performed",
+    "backup_restore_and_failover": "not performed",
+    "execution_phase_static_review": "executed: 26 passed, 0 failed",
+    "python_syntax": "executed: passed",
+    "source_declared_sbom": "executed: 12 declared dependencies plus application; not resolved runtime SBOM"
+  },
+  "evidence": {
+    "original_static_report": "tests/static-review-report.md",
+    "expanded_test_report": "docs/operations/test-results.md",
+    "claims_boundary": "docs/claims.md",
+    "known_limitations": "docs/known-limitations.md",
+    "execution_phase_report": "docs/operations/execution-verification.md",
+    "environment_capabilities": "artifacts/test-results/environment-capabilities.txt",
+    "blocked_gate_attempts": "artifacts/test-results/blocked-gate-attempts.txt",
+    "source_declared_sbom": "artifacts/sbom/source-dependency-inventory.spdx.json",
+    "execution_change_inventory": "docs/execution-change-inventory.md",
+    "final_qc_summary": "artifacts/test-results/final-qc-summary.txt"
+  },
+  "license": "MIT",
+  "platform_name": "Wealth Management Operations Platform",
+  "research_revision": {
+    "date": "2026-07-11",
+    "official_source_links_reviewed": 35,
+    "required_documents": [
+      "docs/AZURE_SQL_REFERENCE_RESEARCH.md",
+      "docs/AZURE_INSPIRED_FUNCTIONAL_PARITY_MATRIX.md",
+      "docs/ORIGINALITY_AND_BRAND_REVIEW.md"
+    ],
+    "architecture_recommendation": "Azure SQL Database single database, General Purpose provisioned production baseline, managed identity, private networking, monitoring, modular Bicep, and GitHub OIDC",
+    "deployment_status": "not deployed"
+  }
+}

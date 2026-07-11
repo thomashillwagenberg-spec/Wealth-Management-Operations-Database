@@ -1,0 +1,100 @@
+@page "/compliance"
+@attribute [Authorize(Roles="DatabaseAdministrator,ComplianceReviewer,ReadOnlyAuditor")]
+@rendermode InteractiveServer
+@inject WealthManagementApiClient Api
+
+<h1>Compliance alerts</h1>
+<p>Filtering and updates are performed through curated procedures. Every update requires the row version that was read.</p>
+
+<div class="toolbar">
+    <label>Status
+        <select @bind="statusFilter">
+            <option value="">All</option>
+            <option value="OPEN">Open</option>
+            <option value="IN_REVIEW">In review</option>
+            <option value="RESOLVED">Resolved</option>
+            <option value="DISMISSED">Dismissed</option>
+        </select>
+    </label>
+    <button type="button" @onclick="ReloadAsync">Apply</button>
+</div>
+
+@if (loading)
+{
+    <p>Loading…</p>
+}
+else if (error is not null)
+{
+    <p class="error" role="alert">@error</p>
+}
+else if (result is null || result.Items.Count == 0)
+{
+    <p class="notice">No alerts were returned.</p>
+}
+else
+{
+    <table>
+        <thead><tr><th>Date</th><th>Client</th><th>Type</th><th>Severity</th><th>Status</th><th>Action</th></tr></thead>
+        <tbody>
+        @foreach (var item in result.Items)
+        {
+            <tr>
+                <td>@item.AlertDate</td><td>@item.ClientName</td><td>@item.AlertType</td><td>@item.Severity</td><td>@item.AlertStatus</td>
+                <td>
+                    <AuthorizeView Roles="DatabaseAdministrator,ComplianceReviewer">
+                        <button type="button" disabled="@saving" @onclick="() => UpdateAsync(item, StatusInReview)">Review</button>
+                        <button type="button" disabled="@saving" @onclick="() => UpdateAsync(item, StatusResolved)">Resolve</button>
+                    </AuthorizeView>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <div class="pager">
+        <button type="button" disabled="@(page <= 1)" @onclick="PreviousAsync">Previous</button>
+        <span>Page @result.Page of @Math.Max(1, result.TotalPages)</span>
+        <button type="button" disabled="@(page >= result.TotalPages)" @onclick="NextAsync">Next</button>
+    </div>
+}
+
+@code {
+    private const string StatusInReview = "IN_REVIEW";
+    private const string StatusResolved = "RESOLVED";
+    private PagedResult<ComplianceAlertDto>? result;
+    private int page = 1;
+    private const int PageSize = 25;
+    private string statusFilter = string.Empty;
+    private bool loading = true;
+    private bool saving;
+    private string? error;
+
+    protected override Task OnInitializedAsync() => ReloadAsync();
+
+    private async Task ReloadAsync()
+    {
+        loading = true;
+        error = null;
+        try
+        {
+            result = await Api.GetAlertsAsync(page, PageSize, string.IsNullOrWhiteSpace(statusFilter) ? null : statusFilter);
+        }
+        catch (Exception ex) { error = ex.Message; }
+        finally { loading = false; }
+    }
+
+    private async Task UpdateAsync(ComplianceAlertDto item, string newStatus)
+    {
+        saving = true;
+        error = null;
+        try
+        {
+            await Api.UpdateAlertAsync(item.ComplianceAlertId, new UpdateComplianceAlertRequest(newStatus, "Updated through the fictional demonstration application.", item.RowVersion));
+            await ReloadAsync();
+        }
+        catch (Exception ex) { error = ex.Message; }
+        finally { saving = false; }
+    }
+
+    private async Task PreviousAsync() { if (page > 1) { page--; await ReloadAsync(); } }
+    private async Task NextAsync() { if (result is not null && page < result.TotalPages) { page++; await ReloadAsync(); } }
+}

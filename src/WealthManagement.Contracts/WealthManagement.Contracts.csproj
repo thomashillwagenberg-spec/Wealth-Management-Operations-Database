@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>WealthManagement.Contracts</RootNamespace>
+  </PropertyGroup>
+</Project>

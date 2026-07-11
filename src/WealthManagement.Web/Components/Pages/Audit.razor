@@ -1,0 +1,6 @@
+@page "/audit"
+@attribute [Authorize(Roles="DatabaseAdministrator,ReadOnlyAuditor")]
+@inject WealthManagementApiClient Api
+<h1>Audit evidence</h1><p>Metadata is deliberately limited to avoid logging tokens, passwords, connection information, or request bodies.</p>
+@if(result is null){<p>Loading…</p>}else{<table><thead><tr><th>Time</th><th>Actor</th><th>Action</th><th>Entity</th><th>Outcome</th><th>Correlation</th></tr></thead><tbody>@foreach(var x in result.Items){<tr><td>@x.EventTime.ToString("u")</td><td>@x.ActorId</td><td>@x.ActionName</td><td>@x.EntityType @x.EntityId</td><td>@x.Outcome</td><td><code>@x.CorrelationId</code></td></tr>}</tbody></table>}
+@code { private PagedResult<AuditEventDto>? result; protected override async Task OnInitializedAsync()=>result=await Api.GetAuditAsync(); }

@@ -1,0 +1,65 @@
+name: SQL integration tests
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'sql/**'
+      - 'database/**'
+      - 'scripts/init-database.sh'
+      - 'tests/WealthManagement.IntegrationTests/**'
+      - 'docker-compose.yml'
+      - '.github/workflows/sql-integration.yml'
+permissions:
+  contents: read
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate ephemeral local-only database passwords
+        shell: bash
+        run: |
+          set -euo pipefail
+          suffix=$(openssl rand -hex 16)
+          printf '%s=%s\n' 'MSSQL_SA_PASSWORD' "Aa1!${suffix}" >> "$GITHUB_ENV"
+          printf '%s=%s\n' 'WM_APP_PASSWORD' "App1!${suffix}" >> "$GITHUB_ENV"
+      - name: Start SQL Server and initialize both database modes
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker compose up -d sqlserver
+          for attempt in $(seq 1 40); do
+            status=$(docker inspect --format='{{.State.Health.Status}}' wm-sqlserver 2>/dev/null || true)
+            [ "$status" = healthy ] && break
+            sleep 5
+          done
+          [ "$(docker inspect --format='{{.State.Health.Status}}' wm-sqlserver)" = healthy ]
+          ./scripts/init-database.sh | tee artifacts-sql-initialization.txt
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+          cache: true
+          cache-dependency-path: '**/*.csproj'
+      - name: Run database integration tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          export WM_SQL_ADMIN_CONNECTION="Server=localhost,1433;Initial Catalog=WealthManagementOperations;User ID=sa;Password=${MSSQL_SA_PASSWORD};Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;"
+          export WM_SQL_INTEGRATION_CONNECTION="Server=localhost,1433;Initial Catalog=WealthManagementOperations;User ID=wm_application;Password=${WM_APP_PASSWORD};Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;"
+          dotnet restore tests/WealthManagement.IntegrationTests/WealthManagement.IntegrationTests.csproj
+          dotnet test tests/WealthManagement.IntegrationTests/WealthManagement.IntegrationTests.csproj -c Release --no-restore --logger 'trx;LogFileName=sql-integration.trx' --results-directory artifacts/test-results
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sql-integration-evidence
+          path: |
+            artifacts-sql-initialization.txt
+            artifacts/test-results
+          if-no-files-found: warn
+      - name: SQL Server diagnostics
+        if: failure()
+        run: docker logs wm-sqlserver || true
+      - name: Stop SQL Server
+        if: always()
+        run: docker compose down --volumes --remove-orphans

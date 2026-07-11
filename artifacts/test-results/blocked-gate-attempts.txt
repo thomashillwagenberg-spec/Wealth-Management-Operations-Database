@@ -1,0 +1,35 @@
+Implementation gate execution attempts
+Date: 2026-07-11
+
+> dotnet restore WealthManagement.slnx
+bash: line 1: dotnet: command not found
+exit_code=127
+
+> dotnet build WealthManagement.slnx -c Release --no-restore
+bash: line 1: dotnet: command not found
+exit_code=127
+
+> dotnet test WealthManagement.slnx -c Release --no-build
+bash: line 1: dotnet: command not found
+exit_code=127
+
+> docker compose config
+bash: line 1: docker: command not found
+exit_code=127
+
+> docker compose up -d sqlserver
+bash: line 1: docker: command not found
+exit_code=127
+
+> sqlcmd -?
+bash: line 1: sqlcmd: command not found
+exit_code=127
+
+> az bicep build --file infra/bicep/main.bicep
+bash: line 1: az: command not found
+exit_code=127
+
+> az deployment group what-if --help
+bash: line 1: az: command not found
+exit_code=127
+

@@ -1,0 +1,6 @@
+@page "/clients/{ClientId:int}"
+@attribute [Authorize]
+@inject WealthManagementApiClient Api
+<h1>Client portfolio</h1>
+@if (model is null) { <p>Loading…</p> } else { <div class="cards"><article><span>Client</span><strong>@model.Client.ClientName</strong></article><article><span>Total value</span><strong>@model.Client.TotalPortfolioValue.ToString("C")</strong></article><article><span>Unrealized return</span><strong>@model.Client.UnrealizedReturnPct.ToString("0.00")%</strong></article></div><h2>Accounts</h2><table><thead><tr><th>Account</th><th>Value</th><th>Gain/loss</th><th>Valuation date</th></tr></thead><tbody>@foreach(var x in model.Accounts){<tr><td><a href="/accounts/@x.AccountId/allocation">@x.AccountNumber</a></td><td>@x.PortfolioValue.ToString("C")</td><td>@x.UnrealizedGainLoss.ToString("C")</td><td>@x.ValuationDate</td></tr>}</tbody></table> }
+@code { [Parameter] public int ClientId { get; set; } private ClientPortfolioEnvelope? model; protected override async Task OnParametersSetAsync() => model = await Api.GetClientAsync(ClientId); }

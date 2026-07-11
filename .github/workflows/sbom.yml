@@ -1,0 +1,21 @@
+name: Software bill of materials
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+permissions:
+  contents: read
+jobs:
+  sbom:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: anchore/sbom-action@v0
+        with:
+          path: .
+          format: spdx-json
+          output-file: artifacts/wealth-management-platform.spdx.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sbom
+          path: artifacts/wealth-management-platform.spdx.json

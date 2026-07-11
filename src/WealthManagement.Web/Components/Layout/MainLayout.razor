@@ -1,0 +1,34 @@
+@inherits LayoutComponentBase
+@inject IWebHostEnvironment Environment
+<div class="shell">
+    <aside class="sidebar">
+        <div class="brand">WM Operations</div>
+        <div class="subbrand">Fictional portfolio platform</div>
+        <nav aria-label="Primary navigation">
+            <NavLink href="/" Match="NavLinkMatch.All">Dashboard</NavLink>
+            <NavLink href="/clients">Clients</NavLink>
+            <NavLink href="/risk">Risk alignment</NavLink>
+            <NavLink href="/concentration">Concentration</NavLink>
+            <NavLink href="/advisor-activity">Advisor activity</NavLink>
+            <NavLink href="/compliance">Compliance</NavLink>
+            <NavLink href="/trade">Trade demonstration</NavLink>
+            <NavLink href="/audit">Audit</NavLink>
+            <NavLink href="/health">System health</NavLink>
+        </nav>
+    </aside>
+    <main>
+        <header>
+            <span>Enterprise-style wealth operations reference</span>
+            <AuthorizeView>
+                <Authorized>
+                    <form method="post" action="@(Environment.IsDevelopment() ? "/dev-logout" : "/account/logout")" class="account-form">
+                        <AntiforgeryToken />
+                        <button type="submit" class="link-button">Sign out</button>
+                    </form>
+                </Authorized>
+                <NotAuthorized><a href="/login">Sign in</a></NotAuthorized>
+            </AuthorizeView>
+        </header>
+        <section class="content">@Body</section>
+    </main>
+</div>

@@ -1,0 +1,51 @@
+name: wealth-management-operations
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: wm-sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+      MSSQL_SA_PASSWORD: "${MSSQL_SA_PASSWORD:?Set MSSQL_SA_PASSWORD in an uncommitted .env file}"
+    ports:
+      - "1433:1433"
+    volumes:
+      - wm-sql-data:/var/opt/mssql
+      - ./:/workspace:ro
+    healthcheck:
+      test: ["CMD-SHELL", "(/opt/mssql-tools18/bin/sqlcmd || /opt/mssql-tools/bin/sqlcmd) -S localhost -U sa -P '$$MSSQL_SA_PASSWORD' -C -Q 'SELECT 1' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+
+  api:
+    profiles: ["app"]
+    build:
+      context: .
+      dockerfile: src/WealthManagement.Api/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      Authentication__EnableDevelopmentAuth: "true"
+      Database__RequireEncryptedConnection: "false"
+      ConnectionStrings__WealthManagement: "Server=sqlserver,1433;Initial Catalog=WealthManagementOperations;User ID=wm_application;Password=${WM_APP_PASSWORD};Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;"
+    ports: ["5187:8080"]
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+
+  web:
+    profiles: ["app"]
+    build:
+      context: .
+      dockerfile: src/WealthManagement.Web/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      Api__BaseUrl: http://api:8080
+    ports: ["5188:8080"]
+    depends_on: [api]
+
+volumes:
+  wm-sql-data:

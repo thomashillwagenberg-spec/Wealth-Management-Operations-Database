@@ -1,0 +1,46 @@
+@page "/health"
+@attribute [Authorize]
+@inject WealthManagementApiClient Api
+<PageTitle>System health</PageTitle>
+<h1>System health</h1>
+<p>Readiness includes the API and database checks. A failed database check is shown as unavailable rather than hidden.</p>
+@if (loading)
+{
+    <p>Checking application status…</p>
+}
+else if (error is not null)
+{
+    <div class="error" role="alert">@error</div>
+}
+else
+{
+    <div class="cards">
+        <article><span>Overall readiness</span><strong>@(health?.Status ?? "Unknown")</strong></article>
+        <article><span>API version</span><strong>@(version?.Version ?? "Unknown")</strong></article>
+        <article><span>Environment</span><strong>@(version?.Environment ?? "Unknown")</strong></article>
+    </div>
+    @if (health is not null)
+    {
+        <table>
+            <thead><tr><th>Component</th><th>Status</th></tr></thead>
+            <tbody>@foreach (var component in health.Components.OrderBy(x => x.Key)) { <tr><td>@component.Key</td><td><span class="status">@component.Value</span></td></tr> }</tbody>
+        </table>
+        <p><small>Checked at @health.CheckedAtUtc.ToString("u")</small></p>
+    }
+}
+@code {
+    private HealthSummaryDto? health;
+    private VersionDto? version;
+    private bool loading = true;
+    private string? error;
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            version = await Api.GetVersionAsync();
+            health = await Api.GetHealthAsync();
+        }
+        catch (Exception ex) { error = ex.Message; }
+        finally { loading = false; }
+    }
+}

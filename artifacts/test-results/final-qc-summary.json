@@ -1,0 +1,43 @@
+{
+  "assessment_date": "2026-07-11",
+  "original_static_check": {
+    "result": "passed",
+    "passed": 71,
+    "failed": 0
+  },
+  "platform_static_check": {
+    "result": "passed",
+    "passed": 45,
+    "failed": 0
+  },
+  "azure_sql_research": {
+    "result": "completed",
+    "official_source_links": 35,
+    "documents_added": 3,
+    "runtime_or_deployment_proof": false
+  },
+  "shell_syntax": {
+    "result": "passed",
+    "files": 4
+  },
+  "python_syntax": {
+    "result": "passed",
+    "files": 2
+  },
+  "dotnet_build_and_tests": {
+    "result": "not executed",
+    "reason": ".NET SDK unavailable"
+  },
+  "sql_server_tests": {
+    "result": "not executed",
+    "reason": "SQL Server and sqlcmd unavailable"
+  },
+  "bicep_compile": {
+    "result": "not executed",
+    "reason": "Azure CLI and Bicep unavailable"
+  },
+  "azure_deployment": {
+    "result": "not executed",
+    "reason": "No deployment authorization or credentials"
+  }
+}

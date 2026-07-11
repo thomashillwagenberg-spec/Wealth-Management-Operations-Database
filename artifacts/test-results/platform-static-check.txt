@@ -1,0 +1,48 @@
+[PASS] Required platform files: all required files found
+[PASS] Original SQL static checker: 71 passed; 0 failed
+[PASS] Original synthetic CSV counts: clients.csv=30; securities.csv=25; prices.csv=175; transactions.csv=403; expected_holdings.csv=300
+[PASS] Synthetic-data declaration: manifest identifies the fixed synthetic database
+[PASS] JSON syntax: parsed 9 JSON files
+[PASS] MSBuild XML syntax: parsed 11 project and props files
+[PASS] YAML syntax: parsed 12 workflow and Compose files
+[PASS] Shell syntax: bash -n passed for 4 scripts
+[PASS] C# lexical brace check: checked 52 C# files
+[PASS] Razor event-attribute review: checked 17 Razor files for nested-quote defects
+[PASS] Extended SQL lexical check: checked 16 application, security, Azure, and test scripts
+[PASS] Bicep lexical brace check: checked 13 Bicep files
+[PASS] Endpoint data-access boundary: API endpoints contain no direct SQL, Dapper, or SqlConnection use
+[PASS] No Entity Framework replacement: wealth database remains Dapper and hand-written T-SQL
+[PASS] No interpolated SQL in repositories: repository SQL uses constants, parameters, and stored procedures
+[PASS] Development authentication production guard: fail-fast production guard found
+[PASS] Authenticated rate-limit partitioning: authentication runs before global and trade-specific rate limiting
+[PASS] Production development-auth default: development authentication defaults to false
+[PASS] Low-privilege local application connection: API uses wm_application rather than sa
+[PASS] No committed local password: only .env.example placeholders are present
+[PASS] Advisor row isolation: SQL RLS and server-resolved application-user mapping found
+[PASS] Trade idempotency: serialized idempotency record and stored procedure found
+[PASS] Optimistic concurrency: rowversion and expected-version checks found
+[PASS] Append-oriented audit design: hash-chained audit procedure found
+[PASS] Posted-transaction immutability: immutable transaction trigger found
+[PASS] Temporal workflow history: temporal history scripts found
+[PASS] Azure security template coverage: managed identity, private networking, TLS, auditing, diagnostics, backups, Key Vault RBAC, budgets, and vulnerability assessment found
+[PASS] Cost-control defaults: budget requires an explicit amount and notification address
+[PASS] DevSecOps workflow coverage: build, tests, SQL review, SAST, dependency review, secret scan, SBOM, OIDC, Bicep, and container scanning found
+[PASS] No long-lived Azure workflow secret: deployment workflow uses OIDC pattern
+[PASS] Extended database validation coverage: found 20 application database result assertions
+[PASS] Four test layers present: found: ['WealthManagement.ArchitectureTests', 'WealthManagement.IntegrationTests', 'WealthManagement.SecurityTests', 'WealthManagement.UnitTests']
+[PASS] No generated build folders: no bin, obj, node_modules, .vs, or __pycache__ directories packaged
+[PASS] No prohibited binary or key material: no database files, backups, certificates, or private keys found
+[PASS] Secret-pattern scan: no committed private keys, credential-bearing connection strings, or token-like assignments found
+[PASS] No unresolved placeholder markers: no unresolved placeholder markers found
+[PASS] Local Markdown links: all repository-relative Markdown links resolve
+[PASS] No fabricated screenshots: screenshot folder contains guidance only
+[PASS] Original learning sequence preserved: original SQLCMD sequence remains available
+[PASS] Azure scripts separated: Azure runner excludes local reset, database creation, and backup scripts
+[PASS] Verification limitations documented: build, database, infrastructure, identity, and deployment limitations are explicit
+[PASS] Azure SQL research evidence: found 35 distinct official-source links and all required research sections
+[PASS] Azure-inspired parity matrix: found 36 source-to-domain mapping rows
+[PASS] Originality and Microsoft brand separation: originality review, independent-design test, own product identity, and non-affiliation boundary found
+[PASS] Claims boundary documented: unsafe certification and production claims are expressly prohibited
+
+Platform static checks: 45 passed; 0 failed.
+This checker did not compile .NET, execute T-SQL, build Bicep, authenticate with Entra, or deploy Azure resources.

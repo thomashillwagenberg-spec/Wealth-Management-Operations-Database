@@ -1,0 +1,29 @@
+name: .NET build and tests
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+          cache: true
+          cache-dependency-path: '**/*.csproj'
+      - run: dotnet restore WealthManagement.slnx
+      - run: dotnet build WealthManagement.slnx -c Release --no-restore
+      - name: Build Blazor frontend artifact
+        run: dotnet publish src/WealthManagement.Web/WealthManagement.Web.csproj -c Release --no-build -o artifacts/web-ci
+      - run: dotnet test WealthManagement.slnx -c Release --no-build --collect:'XPlat Code Coverage' --results-directory artifacts/test-results
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dotnet-test-results
+          path: artifacts/test-results
+          if-no-files-found: warn

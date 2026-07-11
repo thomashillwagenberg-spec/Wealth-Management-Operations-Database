@@ -1,0 +1,38 @@
+@page "/advisor-activity"
+@attribute [Authorize]
+@rendermode InteractiveServer
+@inject WealthManagementApiClient Api
+<PageTitle>Advisor activity</PageTitle>
+<h1>Advisor activity</h1>
+<p>Activity is aggregated by the existing SQL reporting view and restricted through application and database authorization checks.</p>
+<div class="toolbar">
+    <label>Advisor ID<input type="number" min="1" @bind="advisorId" /></label>
+    <label>Start date<input type="date" @bind="startDate" /></label>
+    <label>End date<input type="date" @bind="endDate" /></label>
+    <button type="button" @onclick="LoadAsync" disabled="@loading">Load activity</button>
+</div>
+@if (loading) { <p>Loading…</p> }
+else if (error is not null) { <div class="error" role="alert">@error</div> }
+else if (items.Count == 0) { <p class="notice">No activity was returned for this range.</p> }
+else
+{
+    <table><thead><tr><th>Advisor</th><th>Month</th><th>Transaction type</th><th>Count</th><th>Gross amount</th></tr></thead><tbody>
+    @foreach (var item in items) { <tr><td>@item.AdvisorName</td><td>@item.ActivityMonth</td><td>@item.TransactionTypeCode</td><td>@item.TransactionCount</td><td>@item.GrossAmount.ToString("C")</td></tr> }
+    </tbody></table>
+}
+@code {
+    private IReadOnlyList<AdvisorActivityDto> items = [];
+    private int advisorId = 1;
+    private DateOnly startDate = DateOnly.FromDateTime(DateTime.UtcNow.AddMonths(-12));
+    private DateOnly endDate = DateOnly.FromDateTime(DateTime.UtcNow);
+    private bool loading;
+    private string? error;
+    protected override Task OnInitializedAsync() => LoadAsync();
+    private async Task LoadAsync()
+    {
+        loading = true; error = null;
+        try { items = await Api.GetAdvisorActivityAsync(advisorId, startDate, endDate); }
+        catch (Exception ex) { error = ex.Message; items = []; }
+        finally { loading = false; }
+    }
+}

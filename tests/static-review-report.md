@@ -1,0 +1,115 @@
+# Static review report
+
+**Review date:** July 11, 2026  
+**Tool:** `tools/static_check.py`  
+**Exit code:** 0
+
+## Scope
+
+The static review checked:
+
+- Required repository files
+- Manifest identity and fictional-data flag
+- CSV headers and expected row counts
+- Unique synthetic identifiers
+- Price references and positive prices
+- Transaction reference and field rules
+- Holdings quantity reconciliation
+- Basic lexical balance for every SQL file
+- Presence of required SQL concepts
+- Exact table inventory
+- Master build order
+- Absence of named copied-course identifiers in SQL
+
+Additional in-memory logic checks confirmed:
+
+- Advisor, client, account, security, price, transaction, holding, review, and alert references
+- One current risk profile per client
+- Account/client/advisor consistency
+- Review and alert status/date consistency
+- Review and alert account ownership
+- Alert transaction/account consistency
+- BUY minus SELL quantity reconciliation
+
+## Important limitation
+
+This report is not SQL Server execution evidence. It does not prove that SQL Server accepts every batch, that permissions behave identically on the target instance, that an index is chosen, that backup/restore succeeds, or that Azure deployment works. Run `sql/13_validation_tests.sql` in the target SQL Server environment.
+
+## Tool output
+
+```text
+[PASS] Required files: all required files found
+[PASS] Manifest identity: project, author, and synthetic-data flag checked
+[PASS] CSV clients.csv: header=OK; rows=30 expected=30
+[PASS] CSV securities.csv: header=OK; rows=25 expected=25
+[PASS] CSV prices.csv: header=OK; rows=175 expected=175
+[PASS] CSV transactions.csv: header=OK; rows=403 expected=403
+[PASS] CSV expected_holdings.csv: header=OK; rows=300 expected=300
+[PASS] CSV unique business identifiers: client codes, symbols, and transaction references checked
+[PASS] CSV price references: all price security IDs exist, prices are positive, and dates are unique per security
+[PASS] CSV transaction rules: references, amounts, and security-field rules checked
+[PASS] Holdings reconciliation: current quantities equal BUY minus SELL quantities
+[PASS] Lexical SQL check: 00_reset_database.sql: quotes, comments, and parentheses balanced
+[PASS] Lexical SQL check: 01_create_database.sql: quotes, comments, and parentheses balanced
+[PASS] Lexical SQL check: 02_create_schemas.sql: quotes, comments, and parentheses balanced
+[PASS] Lexical SQL check: 03_create_tables.sql: quotes, comments, and parentheses balanced
+[PASS] Lexical SQL check: 04_create_constraints.sql: quotes, comments, and parentheses balanced
+[PASS] Lexical SQL check: 05_load_reference_data.sql: quotes, comments, and parentheses balanced
+[PASS] Lexical SQL check: 06_load_sample_data.sql: quotes, comments, and parentheses balanced
+[PASS] Lexical SQL check: 07_create_views.sql: quotes, comments, and parentheses balanced
+[PASS] Lexical SQL check: 08_create_functions.sql: quotes, comments, and parentheses balanced
+[PASS] Lexical SQL check: 09_create_procedures.sql: quotes, comments, and parentheses balanced
+[PASS] Lexical SQL check: 10_create_indexes.sql: quotes, comments, and parentheses balanced
+[PASS] Lexical SQL check: 11_security_setup.sql: quotes, comments, and parentheses balanced
+[PASS] Lexical SQL check: 12_analysis_queries.sql: quotes, comments, and parentheses balanced
+[PASS] Lexical SQL check: 13_validation_tests.sql: quotes, comments, and parentheses balanced
+[PASS] Lexical SQL check: 14_backup_restore_examples.sql: quotes, comments, and parentheses balanced
+[PASS] Lexical SQL check: 15_master_demo.sql: quotes, comments, and parentheses balanced
+[PASS] Lexical SQL check: 16_import_csv_examples.sql: quotes, comments, and parentheses balanced
+[PASS] Lexical SQL check: run_all.sql: quotes, comments, and parentheses balanced
+[PASS] SQL concept: CREATE DATABASE: found
+[PASS] SQL concept: CREATE SCHEMA: found
+[PASS] SQL concept: CREATE TABLE: found
+[PASS] SQL concept: ALTER TABLE: found
+[PASS] SQL concept: INSERT: found
+[PASS] SQL concept: UPDATE: found
+[PASS] SQL concept: DELETE: found
+[PASS] SQL concept: SELECT: found
+[PASS] SQL concept: WHERE: found
+[PASS] SQL concept: ORDER BY: found
+[PASS] SQL concept: GROUP BY: found
+[PASS] SQL concept: HAVING: found
+[PASS] SQL concept: INNER JOIN: found
+[PASS] SQL concept: LEFT JOIN: found
+[PASS] SQL concept: CASE: found
+[PASS] SQL concept: Aggregate function: found
+[PASS] SQL concept: Date function: found
+[PASS] SQL concept: String function: found
+[PASS] SQL concept: Subquery: found
+[PASS] SQL concept: CTE: found
+[PASS] SQL concept: Window function: found
+[PASS] SQL concept: View: found
+[PASS] SQL concept: Stored procedure: found
+[PASS] SQL concept: Function: found
+[PASS] SQL concept: COMMIT: found
+[PASS] SQL concept: ROLLBACK: found
+[PASS] SQL concept: TRY...CATCH: found
+[PASS] SQL concept: Temporary table: found
+[PASS] SQL concept: Table variable: found
+[PASS] SQL concept: Index: found
+[PASS] SQL concept: Execution statistics: found
+[PASS] SQL concept: Backup: found
+[PASS] SQL concept: Restore: found
+[PASS] SQL concept: User: found
+[PASS] SQL concept: Role: found
+[PASS] SQL concept: GRANT: found
+[PASS] SQL concept: DENY: found
+[PASS] SQL concept: REVOKE: found
+[PASS] SQL concept: Audit logging: found
+[PASS] Expected table names: found 15 of 15 exact table names
+[PASS] Master build order: scripts 00 through 11 and 13 referenced in dependency order
+[PASS] No copied course identifiers in SQL: no prohibited identifiers found
+
+Static checks: 71 passed; 0 failed.
+This tool did not execute T-SQL against SQL Server.
+```

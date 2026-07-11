@@ -1,0 +1,39 @@
+@page "/concentration"
+@attribute [Authorize]
+@rendermode InteractiveServer
+@inject WealthManagementApiClient Api
+<PageTitle>Concentration analysis</PageTitle>
+<h1>Concentration analysis</h1>
+<p>Positions are calculated from the existing holdings and latest-price SQL logic. Results remain limited to the authenticated user’s authorized scope.</p>
+<div class="toolbar">
+    <label>Account ID (optional)<InputNumber min="1" @bind-Value="accountId" /></label>
+    <label>Minimum concentration %<input type="number" min="0.01" max="100" step="0.01" @bind="minimumPct" /></label>
+    <button type="button" @onclick="LoadAsync" disabled="@loading">Run analysis</button>
+</div>
+@if (loading) { <p>Loading…</p> }
+else if (error is not null) { <div class="error" role="alert">@error</div> }
+else if (items.Count == 0) { <p class="notice">No positions met the selected threshold.</p> }
+else
+{
+    <table><thead><tr><th>Account</th><th>Security</th><th>Market value</th><th>Account value</th><th>Concentration</th></tr></thead><tbody>
+    @foreach (var item in items) { <tr><td>@item.AccountNumber</td><td>@item.Symbol<br /><small>@item.SecurityName</small></td><td>@item.MarketValue.ToString("C")</td><td>@item.AccountValue.ToString("C")</td><td>@item.ConcentrationPct.ToString("0.00")%</td></tr> }
+    </tbody></table>
+}
+@code {
+    private IReadOnlyList<ConcentrationDto> items = [];
+    private int? accountId;
+    private decimal minimumPct = 10m;
+    private bool loading;
+    private string? error;
+    protected override Task OnInitializedAsync() => LoadAsync();
+    private async Task LoadAsync()
+    {
+        loading = true; error = null;
+        try
+        {
+            items = await Api.GetConcentrationsAsync(accountId, minimumPct);
+        }
+        catch (Exception ex) { error = ex.Message; items = []; }
+        finally { loading = false; }
+    }
+}

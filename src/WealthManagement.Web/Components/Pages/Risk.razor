@@ -1,0 +1,6 @@
+@page "/risk"
+@attribute [Authorize]
+@inject WealthManagementApiClient Api
+<h1>Risk alignment</h1><p>Exceptions are calculated from the SQL reporting view and current synthetic holdings.</p>
+@if(items is null){<p>Loading…</p>}else if(items.Count==0){<p class="notice">No out-of-range clients were returned.</p>}else{<table><thead><tr><th>Client</th><th>Risk profile</th><th>Equity allocation</th><th>Range</th><th>Status</th></tr></thead><tbody>@foreach(var x in items){<tr><td>@x.ClientName</td><td>@x.RiskName</td><td>@x.EquityAllocationPct.ToString("0.00")%</td><td>@($"{x.MinEquityPct:0.00}%–{x.MaxEquityPct:0.00}%")</td><td><span class="status">@x.AlignmentStatus</span></td></tr>}</tbody></table>}
+@code { private IReadOnlyList<RiskAlignmentDto>? items; protected override async Task OnInitializedAsync()=>items=await Api.GetRiskAsync(); }

@@ -1,0 +1,27 @@
+@page "/login"
+@attribute [AllowAnonymous]
+@using WealthManagement.Contracts.Security
+<PageTitle>Sign in</PageTitle>
+<h1>Sign in</h1>
+<p>This application contains fictional demonstration data only.</p>
+@if (Environment.IsDevelopment())
+{
+    <form method="post" action="/dev-login" class="panel">
+        <AntiforgeryToken />
+        <label>Synthetic development identity
+            <select name="user">
+                @foreach (var identity in DevelopmentIdentities.All.Values)
+                {
+                    <option value="@identity.UserPrincipalName">@identity.DisplayName (@(string.Join(", ", identity.Roles)))</option>
+                }
+            </select>
+        </label>
+        <p><small>Roles and advisor scope are resolved by the server. Request data cannot assign additional privileges.</small></p>
+        <button type="submit">Use development identity</button>
+    </form>
+}
+else
+{
+    <p><a class="button" href="/account/login">Continue with Microsoft Entra ID</a></p>
+}
+@code { [Inject] public IWebHostEnvironment Environment { get; set; } = default!; }

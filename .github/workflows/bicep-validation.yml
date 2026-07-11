@@ -1,0 +1,21 @@
+name: Bicep lint and build
+on:
+  push:
+    paths: ['infra/bicep/**', '.github/workflows/bicep-validation.yml']
+  pull_request:
+    paths: ['infra/bicep/**', '.github/workflows/bicep-validation.yml']
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/CLI@v2
+        with:
+          inlineScript: |
+            az bicep install
+            az bicep build --file infra/bicep/main.bicep
+            az bicep build --file infra/bicep/cmk-option.bicep
+            az bicep build --file infra/bicep/modules/budget.bicep
+            az bicep build --file infra/bicep/policy/subscription-security.bicep

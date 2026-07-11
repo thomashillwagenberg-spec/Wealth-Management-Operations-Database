@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/WealthManagement.Contracts/WealthManagement.Contracts.csproj" />
+    <Project Path="src/WealthManagement.Application/WealthManagement.Application.csproj" />
+    <Project Path="src/WealthManagement.Infrastructure/WealthManagement.Infrastructure.csproj" />
+    <Project Path="src/WealthManagement.Api/WealthManagement.Api.csproj" />
+    <Project Path="src/WealthManagement.Web/WealthManagement.Web.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/WealthManagement.UnitTests/WealthManagement.UnitTests.csproj" />
+    <Project Path="tests/WealthManagement.IntegrationTests/WealthManagement.IntegrationTests.csproj" />
+    <Project Path="tests/WealthManagement.ArchitectureTests/WealthManagement.ArchitectureTests.csproj" />
+    <Project Path="tests/WealthManagement.SecurityTests/WealthManagement.SecurityTests.csproj" />
+  </Folder>
+</Solution>

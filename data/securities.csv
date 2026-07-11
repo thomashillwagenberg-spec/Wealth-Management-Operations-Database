@@ -1,0 +1,26 @@
+﻿SecurityID,Symbol,SecurityName,AssetClassID,SecurityType,CurrencyCode,IsActive
+1,AURX,Aurora Growth Fund,1,ETF,USD,True
+2,BLCF,Blue Coast Financials Fund,1,ETF,USD,True
+3,CNRD,Concord Industrial Fund,1,ETF,USD,True
+4,DVNT,Devon Technology Fund,1,ETF,USD,True
+5,ELMR,Elm Ridge Dividend Fund,1,ETF,USD,True
+6,FSTN,First Stone Small Cap Fund,1,ETF,USD,True
+7,GLDN,Golden Harbor Large Cap Fund,1,ETF,USD,True
+8,HBRK,Harbor Brook Healthcare Fund,1,ETF,USD,True
+9,INTL,Global Developed Markets Fund,2,ETF,USD,True
+10,PACF,Pacific Markets Fund,2,ETF,USD,True
+11,EMEA,Europe Middle East Africa Fund,2,ETF,USD,True
+12,EMRG,Emerging Markets Fund,2,ETF,USD,True
+13,US10,U.S. Treasury 10-Year Fund,3,ETF,USD,True
+14,CORP,Investment Grade Corporate Bond Fund,3,ETF,USD,True
+15,MUNI,National Municipal Bond Fund,3,ETF,USD,True
+16,SHRT,Short Duration Bond Fund,3,ETF,USD,True
+17,HYBD,High Yield Bond Fund,3,ETF,USD,True
+18,MMKT,Government Money Market Fund,4,MUTUAL_FUND,USD,True
+19,TBL3,Three-Month Treasury Fund,4,ETF,USD,True
+20,REIT,Diversified Real Estate Fund,5,ETF,USD,True
+21,INFR,Infrastructure Assets Fund,5,ETF,USD,True
+22,ALT1,Market Neutral Strategies Fund,6,MUTUAL_FUND,USD,True
+23,ALT2,Private Credit Proxy Fund,6,ETF,USD,True
+24,GOLD,Gold Holdings Fund,7,ETF,USD,True
+25,ENRG,Energy Commodities Fund,7,ETF,USD,True

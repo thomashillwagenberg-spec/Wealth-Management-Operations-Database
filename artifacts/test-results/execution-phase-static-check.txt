@@ -1,0 +1,29 @@
+[PASS] Required demonstration pages: found 12/12 required pages
+[PASS] Required API routes: all required routes present
+[PASS] Access-control interface implementations: 3 access methods found in every implementation
+[PASS] Object-level client authorization: client-specific service path checks access
+[PASS] Object-level account authorization: allocation, concentration, and trade paths check account scope
+[PASS] Object-level advisor authorization: advisor activity path checks advisor scope
+[PASS] Server-resolved development roles: API accepts only a configured synthetic identity selector
+[PASS] Development identity catalog: all five roles have fixed synthetic identities
+[PASS] Web does not forward development role claims: web forwards only the configured identity key
+[PASS] Security test source coverage: found 10 required security test cases
+[PASS] Known C# property defect removed: compliance fake uses ExpectedRowVersion
+[PASS] Advisor SQL object authorization: advisor access procedure and application grant are present
+[PASS] Idempotent replay continuity: replay returns and tests the original correlation identifier
+[PASS] Advisor activity input bounds: database procedure enforces a bounded chronological range
+[PASS] Application database assertions: extended SQL suite contains at least 20 machine-readable result rows
+[PASS] Local SQL runner references: all 20 referenced SQL files exist
+[PASS] Bicep module parameter wiring: main.bicep supplies every declared module parameter exactly once
+[PASS] Bicep resource coverage: all required resource families represented
+[PASS] Audit storage private endpoint: protected audit storage has optional private connectivity
+[PASS] App and Key Vault diagnostics: application and vault diagnostics target Log Analytics
+[PASS] Project-reference integrity: validated 9 project files
+[PASS] Workflow YAML: parsed 11 workflows
+[PASS] OIDC deployment boundary: Azure workflow uses OIDC and no long-lived client secret
+[PASS] Source dependency inventory: source-declared SPDX file exists
+[PASS] SPDX JSON structure: contains 13 packages including the application
+[PASS] Whitespace review: git diff --check passed
+
+Execution-phase static checks: 26 passed; 0 failed.
+Classification: static analysis only. This tool did not compile .NET, execute SQL, compile Bicep, authenticate with Entra, or deploy Azure.

@@ -1,0 +1,16 @@
+Execution-phase final quality-control summary
+Run date: 2026-07-11
+
+Executed successfully:
+- python3 tools/static_check.py: 71 passed, 0 failed
+- python3 tools/platform_static_check.py: 45 passed, 0 failed
+- python3 tools/execution_phase_check.py: 26 passed, 0 failed
+- python3 -m py_compile tools/*.py: passed
+- bash -n scripts/*.sh: passed
+- python3 tools/generate_source_sbom.py: generated 12 declared dependencies plus the application
+- git diff --check: passed
+
+Classifications:
+- The Python, syntax, source-inventory, and whitespace commands above passed through actual execution.
+- C#, Razor, SQL, Bicep, architecture, security, and workflow conclusions from the custom checkers are static-analysis results.
+- .NET compilation and tests, SQL Server execution, application startup, Bicep compilation, Entra testing, and Azure deployment were blocked or not executed as recorded in blocked-gate-attempts.txt.

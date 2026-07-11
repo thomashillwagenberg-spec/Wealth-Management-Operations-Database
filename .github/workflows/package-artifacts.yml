@@ -1,0 +1,25 @@
+name: Package application artifacts
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+      - run: dotnet restore WealthManagement.slnx
+      - run: dotnet publish src/WealthManagement.Api/WealthManagement.Api.csproj -c Release -o artifacts/api --no-restore
+      - run: dotnet publish src/WealthManagement.Web/WealthManagement.Web.csproj -c Release -o artifacts/web --no-restore
+      - run: python tools/static_check.py && python tools/platform_static_check.py && python tools/generate_source_sbom.py && python tools/execution_phase_check.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: application-packages
+          path: |
+            artifacts/api
+            artifacts/web
+            database
+            infra

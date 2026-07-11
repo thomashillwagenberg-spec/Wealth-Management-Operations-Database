@@ -1,0 +1,7 @@
+@page "/clients"
+@attribute [Authorize]
+@inject WealthManagementApiClient Api
+<h1>Client portfolios</h1>
+<p>Only clients in the authenticated user's authorized scope are returned.</p>
+@if (items is null) { <p>Loading…</p> } else { <table><thead><tr><th>Client</th><th>Advisor</th><th>Accounts</th><th>Value</th><th>Return</th></tr></thead><tbody>@foreach (var x in items){<tr><td><a href="/clients/@x.ClientId">@x.ClientName</a><small>@x.ClientCode</small></td><td>@x.AdvisorName</td><td>@x.AccountCount</td><td>@x.TotalPortfolioValue.ToString("C")</td><td>@x.UnrealizedReturnPct.ToString("0.00")%</td></tr>}</tbody></table> }
+@code { private IReadOnlyList<ClientPortfolioSummaryDto>? items; protected override async Task OnInitializedAsync() => items = await Api.GetClientsAsync(); }

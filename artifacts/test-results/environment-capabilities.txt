@@ -1,0 +1,42 @@
+Execution environment capability check
+Date: 2026-07-11
+
+> dotnet --info
+bash: line 1: dotnet: command not found
+exit_code=127
+
+> python3 --version
+Python 3.13.5
+exit_code=0
+
+> docker --version
+bash: line 1: docker: command not found
+exit_code=127
+
+> sqlcmd -?
+bash: line 1: sqlcmd: command not found
+exit_code=127
+
+> az version
+bash: line 1: az: command not found
+exit_code=127
+
+> az bicep version
+bash: line 1: az: command not found
+exit_code=127
+
+> bicep --version
+bash: line 1: bicep: command not found
+exit_code=127
+
+> git --version
+git version 2.47.3
+exit_code=0
+
+> node --version
+v22.16.0
+exit_code=0
+
+> npm --version
+10.9.2
+exit_code=0

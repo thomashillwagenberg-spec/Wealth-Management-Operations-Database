@@ -1,0 +1,309 @@
+# Repository tree
+
+Generated from the final source package. `.git`, caches, build outputs, and the distributable ZIP are excluded.
+
+```text
+Thomas-Wagenberg-Wealth-Management-Operations-Platform/
+├── .github/
+│   └── workflows/
+│       ├── bicep-validation.yml
+│       ├── codeql.yml
+│       ├── container-scan.yml
+│       ├── dependency-review.yml
+│       ├── deploy-azure.yml
+│       ├── dotnet-ci.yml
+│       ├── package-artifacts.yml
+│       ├── sbom.yml
+│       ├── secret-scan.yml
+│       ├── sql-integration.yml
+│       └── sql-static-review.yml
+├── artifacts/
+│   ├── sbom/
+│   │   └── source-dependency-inventory.spdx.json
+│   └── test-results/
+│       ├── .gitkeep
+│       ├── blocked-gate-attempts.txt
+│       ├── environment-capabilities.txt
+│       ├── execution-phase-static-check.txt
+│       ├── final-qc-summary.json
+│       ├── final-qc-summary.txt
+│       ├── original-static-check.txt
+│       ├── platform-static-check.txt
+│       ├── python-syntax.txt
+│       ├── shell-syntax.txt
+│       ├── source-sbom-generation.txt
+│       └── whitespace-review.txt
+├── data/
+│   ├── clients.csv
+│   ├── expected_holdings.csv
+│   ├── prices.csv
+│   ├── README.md
+│   ├── securities.csv
+│   └── transactions.csv
+├── database/
+│   ├── azure/
+│   │   ├── 10_entra_principals.template.sql
+│   │   ├── 11_sensitivity_classification.sql
+│   │   ├── 12_dynamic_data_masking.sql
+│   │   ├── 13_always_encrypted_evaluation.sql
+│   │   ├── 14_ledger_audit_optional.sql
+│   │   ├── 15_azure_validation.sql
+│   │   └── run_azure_schema.sql
+│   ├── local/
+│   │   ├── 20_application_extensions.sql
+│   │   ├── 22_application_procedures.sql
+│   │   ├── 25_create_local_application_login.sql
+│   │   └── run_application_extensions.sql
+│   ├── security/
+│   │   ├── 21_identity_and_row_level_security.sql
+│   │   ├── 23_transaction_immutability_and_permissions.sql
+│   │   └── 24_temporal_history.sql
+│   └── tests/
+│       ├── 20_application_validation.sql
+│       └── 30_azure_security_validation.sql
+├── docs/
+│   ├── architecture/
+│   │   ├── azure-options.md
+│   │   ├── data-flow.md
+│   │   ├── database-access.md
+│   │   ├── identity-authorization.md
+│   │   ├── overview.md
+│   │   └── trust-boundaries.md
+│   ├── compliance/
+│   │   ├── control-mapping.md
+│   │   └── shared-responsibility.md
+│   ├── decisions/
+│   │   ├── ADR-001-dapper-and-stored-procedures.md
+│   │   ├── ADR-002-identity-and-row-isolation.md
+│   │   ├── ADR-003-audit-ledger.md
+│   │   └── ADR-004-deployment-profiles.md
+│   ├── operations/
+│   │   ├── azure-deployment.md
+│   │   ├── backup-disaster-recovery.md
+│   │   ├── capture-guide.md
+│   │   ├── cost-estimation.md
+│   │   ├── demo-script.md
+│   │   ├── execution-verification.md
+│   │   ├── incident-response.md
+│   │   ├── local-development.md
+│   │   ├── logging-monitoring.md
+│   │   ├── production-readiness.md
+│   │   └── test-results.md
+│   ├── security/
+│   │   ├── data-classification-register.md
+│   │   ├── key-management.md
+│   │   ├── privacy-retention.md
+│   │   ├── secrets-management.md
+│   │   ├── security-architecture.md
+│   │   ├── threat-model.md
+│   │   └── vulnerability-management.md
+│   ├── azure-deployment-guide.md
+│   ├── AZURE_INSPIRED_FUNCTIONAL_PARITY_MATRIX.md
+│   ├── AZURE_SQL_REFERENCE_RESEARCH.md
+│   ├── backup-and-restore.md
+│   ├── change-inventory.md
+│   ├── claims.md
+│   ├── current-state-assessment.md
+│   ├── data-dictionary.md
+│   ├── database-design.md
+│   ├── execution-change-inventory.md
+│   ├── importing-data.md
+│   ├── known-limitations.md
+│   ├── learning-modules.md
+│   ├── linkedin-launch-package.md
+│   ├── original-learning-readme.md
+│   ├── ORIGINALITY_AND_BRAND_REVIEW.md
+│   ├── project-overview.md
+│   ├── repository-tree.txt
+│   ├── security-design.md
+│   ├── setup-guide.md
+│   ├── source-verification.md
+│   └── testing-checklist.md
+├── infra/
+│   └── bicep/
+│       ├── modules/
+│       │   ├── app.bicep
+│       │   ├── budget.bicep
+│       │   ├── data.bicep
+│       │   ├── monitoring.bicep
+│       │   ├── network.bicep
+│       │   ├── operations.bicep
+│       │   └── security.bicep
+│       ├── parameters/
+│       │   ├── dev.bicepparam
+│       │   ├── prod.bicepparam
+│       │   └── staging.bicepparam
+│       ├── policy/
+│       │   └── subscription-security.bicep
+│       ├── cmk-option.bicep
+│       └── main.bicep
+├── screenshots/
+│   └── screenshot-capture-guide.md
+├── scripts/
+│   ├── deploy-azure.sh
+│   ├── init-database.sh
+│   ├── Run-Tests.ps1
+│   ├── run-tests.sh
+│   ├── Setup-Local.ps1
+│   └── setup-local.sh
+├── sql/
+│   ├── 00_reset_database.sql
+│   ├── 01_create_database.sql
+│   ├── 02_create_schemas.sql
+│   ├── 03_create_tables.sql
+│   ├── 04_create_constraints.sql
+│   ├── 05_load_reference_data.sql
+│   ├── 06_load_sample_data.sql
+│   ├── 07_create_views.sql
+│   ├── 08_create_functions.sql
+│   ├── 09_create_procedures.sql
+│   ├── 10_create_indexes.sql
+│   ├── 11_security_setup.sql
+│   ├── 12_analysis_queries.sql
+│   ├── 13_validation_tests.sql
+│   ├── 14_backup_restore_examples.sql
+│   ├── 15_master_demo.sql
+│   ├── 16_import_csv_examples.sql
+│   └── run_all.sql
+├── src/
+│   ├── WealthManagement.Api/
+│   │   ├── Authentication/
+│   │   │   ├── AuthenticationExtensions.cs
+│   │   │   └── DevelopmentHeaderAuthenticationHandler.cs
+│   │   ├── Authorization/
+│   │   │   ├── CurrentUserContext.cs
+│   │   │   └── RoleNames.cs
+│   │   ├── Endpoints/
+│   │   │   ├── AuditEndpoints.cs
+│   │   │   ├── ComplianceEndpoints.cs
+│   │   │   ├── OperationsEndpoints.cs
+│   │   │   ├── PortfolioEndpoints.cs
+│   │   │   └── TradeEndpoints.cs
+│   │   ├── Middleware/
+│   │   │   ├── CorrelationIdMiddleware.cs
+│   │   │   ├── GlobalExceptionHandler.cs
+│   │   │   └── SecurityHeadersMiddleware.cs
+│   │   ├── Properties/
+│   │   │   └── launchSettings.json
+│   │   ├── appsettings.Development.json
+│   │   ├── appsettings.json
+│   │   ├── Dockerfile
+│   │   ├── Program.cs
+│   │   └── WealthManagement.Api.csproj
+│   ├── WealthManagement.Application/
+│   │   ├── Abstractions/
+│   │   │   ├── ICurrentUserContext.cs
+│   │   │   └── Repositories.cs
+│   │   ├── Services/
+│   │   │   └── Services.cs
+│   │   ├── Validation/
+│   │   │   ├── ComplianceValidators.cs
+│   │   │   ├── SubmitTradeRequestValidator.cs
+│   │   │   └── Validation.cs
+│   │   └── WealthManagement.Application.csproj
+│   ├── WealthManagement.Contracts/
+│   │   ├── Audit/
+│   │   │   └── AuditDtos.cs
+│   │   ├── Common/
+│   │   │   ├── ApiError.cs
+│   │   │   └── PagedResult.cs
+│   │   ├── Compliance/
+│   │   │   └── ComplianceDtos.cs
+│   │   ├── Operations/
+│   │   │   └── OperationsDtos.cs
+│   │   ├── Portfolios/
+│   │   │   └── PortfolioDtos.cs
+│   │   ├── Security/
+│   │   │   └── DevelopmentIdentities.cs
+│   │   ├── Trading/
+│   │   │   └── TradeDtos.cs
+│   │   └── WealthManagement.Contracts.csproj
+│   ├── WealthManagement.Infrastructure/
+│   │   ├── Data/
+│   │   │   ├── DatabaseOptions.cs
+│   │   │   ├── ISqlConnectionFactory.cs
+│   │   │   └── SqlConnectionFactory.cs
+│   │   ├── Health/
+│   │   │   └── SqlDatabaseHealthCheck.cs
+│   │   ├── Repositories/
+│   │   │   ├── AccessControlRepository.cs
+│   │   │   ├── AuditRepository.cs
+│   │   │   ├── ComplianceRepository.cs
+│   │   │   ├── PortfolioRepository.cs
+│   │   │   └── TradeRepository.cs
+│   │   ├── DependencyInjection.cs
+│   │   └── WealthManagement.Infrastructure.csproj
+│   └── WealthManagement.Web/
+│       ├── Api/
+│       │   ├── ApiAuthorizationHandler.cs
+│       │   └── WealthManagementApiClient.cs
+│       ├── Components/
+│       │   ├── Layout/
+│       │   │   └── MainLayout.razor
+│       │   ├── Pages/
+│       │   │   ├── AdvisorActivity.razor
+│       │   │   ├── Allocation.razor
+│       │   │   ├── Audit.razor
+│       │   │   ├── ClientPortfolio.razor
+│       │   │   ├── Clients.razor
+│       │   │   ├── Compliance.razor
+│       │   │   ├── Concentration.razor
+│       │   │   ├── Error.razor
+│       │   │   ├── Health.razor
+│       │   │   ├── Home.razor
+│       │   │   ├── Login.razor
+│       │   │   ├── Risk.razor
+│       │   │   └── Trade.razor
+│       │   ├── _Imports.razor
+│       │   ├── App.razor
+│       │   └── Routes.razor
+│       ├── Middleware/
+│       │   └── SecurityHeadersMiddleware.cs
+│       ├── Properties/
+│       │   └── launchSettings.json
+│       ├── wwwroot/
+│       │   └── app.css
+│       ├── appsettings.json
+│       ├── Dockerfile
+│       ├── Program.cs
+│       └── WealthManagement.Web.csproj
+├── tests/
+│   ├── WealthManagement.ArchitectureTests/
+│   │   ├── GlobalUsings.cs
+│   │   ├── RepositoryArchitectureTests.cs
+│   │   └── WealthManagement.ArchitectureTests.csproj
+│   ├── WealthManagement.IntegrationTests/
+│   │   ├── DatabaseIntegrationTests.cs
+│   │   ├── GlobalUsings.cs
+│   │   ├── SqlIntegrationFactAttribute.cs
+│   │   └── WealthManagement.IntegrationTests.csproj
+│   ├── WealthManagement.SecurityTests/
+│   │   ├── GlobalUsings.cs
+│   │   ├── SecurityBoundaryTests.cs
+│   │   └── WealthManagement.SecurityTests.csproj
+│   ├── WealthManagement.UnitTests/
+│   │   ├── GlobalUsings.cs
+│   │   ├── PortfolioServiceTests.cs
+│   │   ├── TradeServiceTests.cs
+│   │   ├── ValidationTests.cs
+│   │   └── WealthManagement.UnitTests.csproj
+│   └── static-review-report.md
+├── tools/
+│   ├── execution_phase_check.py
+│   ├── generate_source_sbom.py
+│   ├── platform_static_check.py
+│   └── static_check.py
+├── .env.example
+├── .gitignore
+├── Directory.Build.props
+├── Directory.Packages.props
+├── docker-compose.yml
+├── FINAL-DELIVERY.md
+├── global.json
+├── LICENSE
+├── project-manifest.json
+├── README.md
+└── WealthManagement.slnx
+```
+
+**Packaged source files:** 238

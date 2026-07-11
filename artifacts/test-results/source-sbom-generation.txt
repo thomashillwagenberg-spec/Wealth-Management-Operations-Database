@@ -1,0 +1,2 @@
+Wrote artifacts/sbom/source-dependency-inventory.spdx.json with 12 declared dependencies.
+Classification: generated from source declarations; not a resolved runtime SBOM.

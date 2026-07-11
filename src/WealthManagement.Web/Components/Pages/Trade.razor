@@ -1,0 +1,12 @@
+@page "/trade"
+@attribute [Authorize(Roles="DatabaseAdministrator,AdvisorUser")]
+@rendermode InteractiveServer
+@inject WealthManagementApiClient Api
+<h1>Synthetic trade entry</h1><div class="warning">Demonstration only. This workflow does not place a real trade.</div>
+<EditForm Model="request" OnValidSubmit="SubmitAsync" class="panel"><DataAnnotationsValidator /><label>Account ID<InputNumber @bind-Value="request.AccountId" /></label><label>Type<InputSelect @bind-Value="request.TransactionTypeCode"><option>BUY</option><option>SELL</option></InputSelect></label><label>Security ID<InputNumber @bind-Value="request.SecurityId" /></label><label>Quantity<InputNumber @bind-Value="request.Quantity" /></label><label>Price<InputNumber @bind-Value="request.Price" /></label><label>External reference<InputText @bind-Value="request.ExternalReference" /></label><button disabled="@submitting">Submit synthetic trade</button></EditForm>
+@if(message is not null){<div class="notice">@message</div>}
+@code {
+ private TradeForm request=new(); private bool submitting; private string? message;
+ private async Task SubmitAsync(){submitting=true;try{var key=$"web-{Guid.NewGuid():N}";var response=await Api.SubmitTradeAsync(new(request.AccountId,request.TransactionTypeCode,request.SecurityId,DateOnly.FromDateTime(DateTime.UtcNow),DateOnly.FromDateTime(DateTime.UtcNow.AddDays(1)),request.Quantity,request.Price,0,request.ExternalReference,key,"Submitted from the fictional web demonstration"));message=$"Transaction {response?.TransactionId} recorded. Correlation ID: {response?.CorrelationId}";}catch(Exception ex){message=ex.Message;}finally{submitting=false;}}
+ private sealed class TradeForm{public int AccountId{get;set;}=1;public string TransactionTypeCode{get;set;}="BUY";public int SecurityId{get;set;}=1;public decimal Quantity{get;set;}=1;public decimal Price{get;set;}=100;public string ExternalReference{get;set;}=$"WEB-{DateTime.UtcNow:yyyyMMddHHmmss}";}
+}

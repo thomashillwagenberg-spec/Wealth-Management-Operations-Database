@@ -1,0 +1,26 @@
+@page "/"
+@attribute [Authorize]
+@inject WealthManagementApiClient Api
+<PageTitle>Executive dashboard</PageTitle>
+<h1>Executive dashboard</h1>
+<p class="lede">A restrained operational view built on the original SQL reporting layer. All data is synthetic.</p>
+@if (loading) { <p>Loading verified database output…</p> }
+else if (error is not null) { <div class="error">@error</div> }
+else
+{
+    <div class="cards">
+        <article><span>Clients in scope</span><strong>@clients.Count</strong></article>
+        <article><span>Portfolio value</span><strong>@clients.Sum(x => x.TotalPortfolioValue).ToString("C0")</strong></article>
+        <article><span>Open control cases</span><strong>@compliance.Sum(x => x.OpenAlertCount)</strong></article>
+    </div>
+    <h2>Largest portfolios in authorized scope</h2>
+    <table><thead><tr><th>Client</th><th>Accounts</th><th>Portfolio value</th><th>Unrealized gain/loss</th></tr></thead><tbody>
+    @foreach (var item in clients.Take(8)) { <tr><td><a href="/clients/@item.ClientId">@item.ClientName</a></td><td>@item.AccountCount</td><td>@item.TotalPortfolioValue.ToString("C")</td><td>@item.UnrealizedGainLoss.ToString("C")</td></tr> }
+    </tbody></table>
+}
+@code {
+    private IReadOnlyList<ClientPortfolioSummaryDto> clients = [];
+    private IReadOnlyList<ComplianceDashboardDto> compliance = [];
+    private bool loading = true; private string? error;
+    protected override async Task OnInitializedAsync() { try { clients = await Api.GetClientsAsync(); compliance = await Api.GetComplianceDashboardAsync(); } catch (Exception ex) { error = ex.Message; } finally { loading = false; } }
+}
