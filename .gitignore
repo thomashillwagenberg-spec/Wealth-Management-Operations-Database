@@ -1,0 +1,43 @@
+# SQL Server local artifacts
+*.bak
+*.trn
+*.mdf
+*.ndf
+*.ldf
+
+# Credentials and environment files
+.env
+.env.*
+*.secrets.*
+appsettings.*.json
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# .NET build artifacts
+**/bin/
+**/obj/
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+# Packaged artifacts
+artifacts/*
+!artifacts/test-results/
+!artifacts/test-results/.gitkeep
+
+# Keep safe templates and development defaults
+!.env.example
+!src/**/appsettings.Development.json
+
+# Azure local state
+.azure/
+*.bicep.json
