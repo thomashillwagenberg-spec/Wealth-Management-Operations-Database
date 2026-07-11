@@ -6,8 +6,8 @@ RUN dotnet publish src/WealthManagement.Web/WealthManagement.Web.csproj -c Relea
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
 WORKDIR /app
-RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
 COPY --from=build /app/publish .
-USER appuser
+# Built-in non-root user shipped with the .NET 8+ runtime images
+USER app
 EXPOSE 8080
 ENTRYPOINT ["dotnet", "WealthManagement.Web.dll"]

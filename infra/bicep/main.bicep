@@ -122,27 +122,23 @@ module app 'modules/app.bicep' = {
   }
 }
 
-resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
-  name: security.outputs.keyVaultName
-}
-
-resource apiKeyVaultReader 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(keyVault.id, app.outputs.apiPrincipalId, 'key-vault-secrets-user')
-  scope: keyVault
-  properties: {
+module apiKeyVaultReader 'modules/keyvault-rbac.bicep' = {
+  name: 'api-kv-rbac-${environmentName}'
+  params: {
+    keyVaultName: security.outputs.keyVaultName
     principalId: app.outputs.apiPrincipalId
-    principalType: 'ServicePrincipal'
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4633458b-17de-408a-b874-0445c86b69e6')
+    assignmentPurpose: 'api-key-vault-secrets-user'
   }
 }
 
-resource webKeyVaultReader 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(keyVault.id, app.outputs.webPrincipalId, 'key-vault-secrets-user')
-  scope: keyVault
-  properties: {
+module webKeyVaultReader 'modules/keyvault-rbac.bicep' = {
+  name: 'web-kv-rbac-${environmentName}'
+  params: {
+    keyVaultName: security.outputs.keyVaultName
     principalId: app.outputs.webPrincipalId
-    principalType: 'ServicePrincipal'
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4633458b-17de-408a-b874-0445c86b69e6')
+    assignmentPurpose: 'web-key-vault-secrets-user'
   }
 }
 
