@@ -36,7 +36,7 @@ jobs:
           done
           [ "$(docker inspect --format='{{.State.Health.Status}}' wm-sqlserver)" = healthy ]
           ./scripts/init-database.sh | tee artifacts-sql-initialization.txt
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/setup-dotnet@v5
         with:
           global-json-file: global.json
           cache: true
