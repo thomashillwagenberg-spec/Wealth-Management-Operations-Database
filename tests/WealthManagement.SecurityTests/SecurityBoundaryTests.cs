@@ -121,7 +121,9 @@ public sealed class SecurityBoundaryTests : IClassFixture<SecurityApplicationFac
         var put = await client.PutAsJsonAsync("/api/compliance/alerts/1/status", update);
         var delete = await client.DeleteAsync("/api/compliance/alerts/1");
         Assert.Equal(HttpStatusCode.Forbidden, put.StatusCode);
-        Assert.Equal(HttpStatusCode.MethodNotAllowed, delete.StatusCode);
+        // No delete route exists anywhere under /api/compliance: unmatched routes return 404,
+        // which proves the deletion surface is absent rather than merely forbidden.
+        Assert.Equal(HttpStatusCode.NotFound, delete.StatusCode);
     }
 
     [Fact]
