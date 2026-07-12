@@ -49,7 +49,7 @@ jobs:
           export WM_SQL_INTEGRATION_CONNECTION="Server=localhost,1433;Initial Catalog=WealthManagementOperations;User ID=wm_application;Password=${WM_APP_PASSWORD};Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;"
           dotnet restore tests/WealthManagement.IntegrationTests/WealthManagement.IntegrationTests.csproj
           dotnet test tests/WealthManagement.IntegrationTests/WealthManagement.IntegrationTests.csproj -c Release --no-restore --logger 'trx;LogFileName=sql-integration.trx' --results-directory artifacts/test-results
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: sql-integration-evidence

@@ -15,7 +15,7 @@ jobs:
           path: .
           format: spdx-json
           output-file: artifacts/wealth-management-platform.spdx.json
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: sbom
           path: artifacts/wealth-management-platform.spdx.json
